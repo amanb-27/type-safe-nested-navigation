@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -40,7 +41,13 @@ fun MainScreen(
                     NavigationBarItem(
                         selected = isSelected,
                         onClick = {
-                            mainNavController.navigate(item.route)
+                            mainNavController.navigate(item.route) {
+                                popUpTo(mainNavController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         },
                         icon = {
                             Icon(
@@ -69,7 +76,7 @@ fun HomeScreen() {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(text = "Home Screen")
     }
 }
@@ -80,18 +87,18 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(text = "Profile Screen")
     }
 }
 
 @Composable
-fun NotificationScreen(onClick : ()-> Unit) {
+fun NotificationScreen(onClick: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(text = "Notification Screen")
         Button(
             onClick = onClick
@@ -107,7 +114,7 @@ fun SettingScreen(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(text = "Setting Screen")
     }
 }
